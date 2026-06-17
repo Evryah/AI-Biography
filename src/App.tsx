@@ -16,7 +16,6 @@ import {
   ShieldAlert
 } from 'lucide-react';
 
-import Watermark from './components/Watermark';
 import LegalModal from './components/LegalModal';
 import SuccessView from './components/SuccessView';
 import BrandLogo from './components/BrandLogo';
@@ -812,8 +811,7 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Brand Watermark Overlay on Bottom Right of screen */}
-        <Watermark />
+
 
       </div>
 
