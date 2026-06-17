@@ -16,7 +16,6 @@ import {
   ShieldAlert
 } from 'lucide-react';
 
-import Watermark from './components/Watermark';
 import LegalModal from './components/LegalModal';
 import SuccessView from './components/SuccessView';
 import BrandLogo from './components/BrandLogo';
@@ -43,6 +42,10 @@ export default function App() {
 
   // Dynamic Validation Errors
   const [errors, setErrors] = useState<FormErrors>({});
+
+  // Server API states
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [apiSuccess, setApiSuccess] = useState<string | null>(null);
 
   // Password visibility triggers
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -121,8 +124,10 @@ export default function App() {
   const strength = calculatePasswordStrength();
 
   // Registration Submission Handler
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
+    setApiSuccess(null);
 
     // Trigger touched state on all elements
     const allTouched = {
@@ -165,26 +170,88 @@ export default function App() {
 
     setErrors(finalErrors);
 
-    // If no errors, initiate mock submission state
+    // If no client errors, initiate real server register
     if (Object.keys(finalErrors).length === 0) {
       setIsSubmitting(true);
-      
-      // Simulate highly realistic server registration hook
-      setTimeout(() => {
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          setApiSuccess(data.message || 'Registration complete');
+          setIsSubmitted(true);
+        } else {
+          setApiError(data.error || 'Registration failed');
+        }
+      } catch (err) {
+        setApiError('Unable to connect to the archival nodes. Check connection.');
+      } finally {
         setIsSubmitting(false);
-        setIsSubmitted(true);
-      }, 1500);
+      }
     }
   };
 
   // Mock Login Submission Handler
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
+    setApiSuccess(null);
+
+    let hasErrors = false;
+    const loginErrors: FormErrors = {};
+
+    if (!form.email) {
+      loginErrors.email = 'Email address is required';
+      hasErrors = true;
+    }
+    if (!form.password) {
+      loginErrors.password = 'A password is required';
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      setErrors(loginErrors);
+      return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setApiSuccess(data.message || 'Signature verified');
+        // Update user state so success profile reads their real credential
+        setForm(prev => ({
+          ...prev,
+          fullName: data.user?.fullName || 'Archival Successor'
+        }));
+        setIsSubmitted(true);
+      } else {
+        setApiError(data.error || 'Authentication failed');
+      }
+    } catch (err) {
+      setApiError('Unable to establish secure gateway session. Check connection.');
+    } finally {
       setIsSubmitting(false);
-      alert('Mock Login Authorized: You entered the Digital Library gates.');
-    }, 1200);
+    }
   };
 
   return (
@@ -305,6 +372,17 @@ export default function App() {
               {/* REGISTER INTAKE FORM */}
               {activeView === 'register' ? (
                 <form onSubmit={handleRegisterSubmit} className="space-y-6" noValidate>
+                  
+                  {apiError && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3.5 bg-rose-50/80 border border-rose-150 rounded-lg text-rose-700 text-xs flex items-start gap-2.5 font-sans"
+                    >
+                      <AlertCircle className="w-4.5 h-4.5 text-rose-500 shrink-0 mt-0.5" />
+                      <span>{apiError}</span>
+                    </motion.div>
+                  )}
                   
                   {/* Full Name Input Block */}
                   <div className="relative group">
@@ -545,6 +623,17 @@ export default function App() {
 
                 /* MOCK LOGIN FORM */
                 <form onSubmit={handleLoginSubmit} className="space-y-6" noValidate>
+
+                  {apiError && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3.5 bg-rose-50/80 border border-rose-150 rounded-lg text-rose-700 text-xs flex items-start gap-2.5 font-sans"
+                    >
+                      <AlertCircle className="w-4.5 h-4.5 text-rose-500 shrink-0 mt-0.5" />
+                      <span>{apiError}</span>
+                    </motion.div>
+                  )}
                   
                   {/* Email Input */}
                   <div className="relative group">
@@ -690,6 +779,8 @@ export default function App() {
                         onClick={() => {
                           setActiveView('login');
                           setTouched({});
+                          setApiError(null);
+                          setApiSuccess(null);
                         }}
                         className="font-semibold text-legacy-navy underline hover:text-legacy-gold cursor-pointer transition-colors duration-200"
                       >
@@ -704,6 +795,8 @@ export default function App() {
                         onClick={() => {
                           setActiveView('register');
                           setTouched({});
+                          setApiError(null);
+                          setApiSuccess(null);
                         }}
                         className="font-semibold text-legacy-navy underline hover:text-legacy-gold cursor-pointer transition-colors duration-200"
                       >
@@ -718,8 +811,7 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Brand Watermark Overlay on Bottom Right of screen */}
-        <Watermark />
+
 
       </div>
 
