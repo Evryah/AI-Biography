@@ -19,6 +19,7 @@ import {
 import Watermark from './components/Watermark';
 import LegalModal from './components/LegalModal';
 import SuccessView from './components/SuccessView';
+import BrandLogo from './components/BrandLogo';
 import { RegisterFormState, FormErrors, ActiveFormView, LegalDocument } from './types';
 import { TERMS_OF_SERVICE, PRIVACY_POLICY, AFTERLIFE_PROTOCOLS } from './data';
 
@@ -197,7 +198,7 @@ export default function App() {
         {/* Beautiful atmospheric image with no-referrer for safety */}
         <img 
           src="/src/assets/images/celestial_library_1781657848291.jpg" 
-          alt="Celestial Archival Sanctuary"
+          alt="Xinghuoji Archival Sanctuary"
           referrerPolicy="no-referrer"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-[12000ms] hover:scale-105"
         />
@@ -216,19 +217,7 @@ export default function App() {
         <div className="relative w-full flex flex-col justify-between p-12 select-text text-white">
           
           {/* Top Logo Container */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center p-2.5 rounded-lg bg-legacy-gold/10 border border-legacy-gold/30">
-              <Diamond className="w-5 h-5 text-legacy-gold fill-legacy-gold/20" />
-            </div>
-            <div>
-              <span className="font-cinzel text-base font-bold tracking-[0.3em] text-white">
-                CELESTIAL
-              </span>
-              <span className="font-cinzel text-xs tracking-[0.2em] block text-legacy-gold font-light mt-0.5">
-                HERITAGE ARCHIVES
-              </span>
-            </div>
-          </div>
+          <BrandLogo variant="hero" />
 
           {/* Centered Literary Quotes */}
           <div className="max-w-md my-auto space-y-8 pr-4">
@@ -300,12 +289,7 @@ export default function App() {
               <div className="mb-10 text-left">
                 
                 {/* Responsive Mobile Logo display (only visible when Left Panel is hidden) */}
-                <div className="flex items-center gap-2 mb-6 lg:hidden">
-                  <Diamond className="w-5 h-5 text-legacy-gold fill-legacy-gold/10" />
-                  <span className="font-cinzel text-xs font-bold tracking-[0.25em] text-legacy-navy">
-                    CELESTIAL HERITAGE
-                  </span>
-                </div>
+                <BrandLogo variant="mobile" className="mb-6 lg:hidden" />
 
                 <h2 className="font-serif-display text-4xl text-legacy-navy font-semibold tracking-normal leading-tight mb-2">
                   {activeView === 'register' ? 'Begin Your Legacy' : 'Enter the Sanctuary'}

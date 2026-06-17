@@ -43,7 +43,7 @@ export default function Watermark() {
   ];
 
   return (
-    <div className="absolute bottom-2 right-5 sm:right-8 pointer-events-auto cursor-help opacity-[0.04] sm:opacity-[0.06] md:opacity-[0.08] lg:opacity-[0.10] hover:opacity-100 active:opacity-100 w-[75px] sm:w-[95px] md:w-[120px] h-[75px] sm:h-[95px] md:h-[120px] select-none transition-all duration-300 ease-out transform hover:scale-110 active:scale-95" title="The Celestial Dandelion of Preserved Souls">
+    <div className="absolute bottom-2 right-5 sm:right-8 pointer-events-auto cursor-help opacity-[0.04] sm:opacity-[0.06] md:opacity-[0.08] lg:opacity-[0.10] hover:opacity-100 active:opacity-100 w-[75px] sm:w-[95px] md:w-[120px] h-[75px] sm:h-[95px] md:h-[120px] select-none transition-all duration-300 ease-out transform hover:scale-110 active:scale-95" title="Xinghuoji: AI Biography & Digital Legacy Platform">
       <svg
         viewBox="0 0 100 100"
         fill="none"

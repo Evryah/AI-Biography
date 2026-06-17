@@ -1,5 +1,5 @@
 /**
- * TypeScript definitions for Celestial Heritage Platform
+ * TypeScript definitions for Xinghuoji Platform
  */
 
 export interface RegisterFormState {

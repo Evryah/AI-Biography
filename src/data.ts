@@ -4,7 +4,7 @@ export const TERMS_OF_SERVICE: LegalDocument = {
   title: 'Terms of Archival Preservation',
   lastUpdated: 'June 16, 2026',
   content: [
-    'Acceptance of Archival Custody: By selecting "Create Your Legacy", you grant Celestial Heritage Platform the perpetual, non-exclusive right to index, categorize, and preserve your digitized memories, biological telemetry, and written words as part of the Digital Archive of Humanity.',
+    'Acceptance of Archival Custody: By selecting "Create Your Legacy", you grant Xinghuoji Platform the perpetual, non-exclusive right to index, categorize, and preserve your digitized memories, biological telemetry, and written words as part of the Digital Archive of Humanity.',
     'Custodianship & Projections: We pledge to uphold high-fidelity replication of your uploaded resources. Your interactive avatar overlays and synthetic voice models will remain under your private authorization or under your designated lineage trustee.',
     'Sanctification of Identity: Any malicious impersonation, generation of defamatory historical memoirs, or synthetic identity manipulation will result in terminal removal from the constellation database.',
     'Lineage Trustee Authority: Upon your biological transitions, custody of this account shall systematically shift to your designated Legal Successors as described under our digital afterlife protocols.'
