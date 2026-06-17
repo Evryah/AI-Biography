@@ -1,0 +1,6 @@
+{
+  "name": "Celestial Heritage Registration",
+  "description": "An elegant registration screen for the AI Biography and Digital Legacy Platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
