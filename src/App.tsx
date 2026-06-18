@@ -284,7 +284,7 @@ export default function App() {
         <div className="relative w-full flex flex-col justify-between p-12 select-text text-white">
           
           {/* Top Logo Container */}
-          <BrandLogo variant="hero" />
+          <BrandLogo variant="hero" className="-ml-3" />
 
           {/* Centered Literary Quotes */}
           <div className="max-w-md my-auto space-y-8 pr-4">
@@ -356,7 +356,7 @@ export default function App() {
               <div className="mb-10 text-left">
                 
                 {/* Responsive Mobile Logo display (only visible when Left Panel is hidden) */}
-                <BrandLogo variant="mobile" className="mb-6 lg:hidden" />
+                <BrandLogo variant="mobile" className="mb-6 lg:hidden -ml-2" />
 
                 <h2 className="font-serif-display text-4xl text-legacy-navy font-semibold tracking-normal leading-tight mb-2">
                   {activeView === 'register' ? 'Begin Your Legacy' : 'Enter the Sanctuary'}
