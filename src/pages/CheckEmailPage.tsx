@@ -114,6 +114,14 @@ export default function CheckEmailPage() {
           Return to Login
         </button>
 
+        {/* Added simulation trigger to easily explore the new reset password page */}
+        <button
+          onClick={() => navigate('/reset-password', { state: { email } })}
+          className="w-full border border-dashed border-amber-300 hover:border-amber-400 text-amber-700 py-3.5 rounded-lg font-mono text-[10px] font-bold tracking-wider uppercase transition-all duration-300 text-center block max-w-sm mx-auto mt-3 cursor-pointer hover:bg-amber-50/50"
+        >
+          Simulate: Open Password Reset Link
+        </button>
+
         <div className="text-xs text-slate-400 font-sans text-center mt-8">
           Didn&apos;t receive the email? Check your spam folder or
         </div>

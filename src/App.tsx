@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import CheckEmailPage from './pages/CheckEmailPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/check-email" element={<CheckEmailPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         
         {/* Fallback pattern to map root or custom routes directly to /register */}
         <Route path="*" element={<Navigate to="/register" replace />} />

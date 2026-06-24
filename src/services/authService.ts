@@ -3,6 +3,7 @@ import { RegisterFormState } from '../types';
 export interface AuthResponse {
   success: boolean;
   message: string;
+  token?: string;
   user?: {
     fullName: string;
     email: string;
@@ -27,10 +28,15 @@ export const authService = {
       throw new Error(data.error || 'Registration failed');
     }
 
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
     return {
       success: true,
       message: data.message || 'Registration complete',
-      user: data.user
+      user: data.user,
+      token: data.token
     };
   },
 
@@ -51,10 +57,15 @@ export const authService = {
       throw new Error(data.error || 'Authentication failed');
     }
 
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
     return {
       success: true,
       message: data.message || 'Signature verified',
-      user: data.user
+      user: data.user,
+      token: data.token
     };
   },
 
@@ -62,22 +73,32 @@ export const authService = {
    * Fetch authenticated user details of active session.
    */
   async getCurrentUser(): Promise<AuthResponse> {
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch('/api/auth/me', {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      headers
     });
 
     const data = await response.json();
     if (!response.ok) {
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+      }
       throw new Error(data.error || 'No active session');
     }
 
     return {
       success: true,
       message: 'Active session resolved',
-      user: data.user
+      user: data.user,
+      token: token || undefined
     };
   },
 
@@ -85,12 +106,21 @@ export const authService = {
    * Clear secure session and log out.
    */
   async logout(): Promise<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch('/api/auth/logout', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      headers
     });
+
+    // Always guarantee cleanup of localStorage
+    localStorage.removeItem('token');
 
     const data = await response.json();
     if (!response.ok) {
@@ -123,6 +153,29 @@ export const authService = {
     return {
       success: true,
       message: data.message || 'Password reset link sent'
+    };
+  },
+
+  /**
+   * Complete password reset flow.
+   */
+  async resetPassword(payload: { email: string; password?: string; confirmPassword?: string }): Promise<{ success: boolean; message: string }> {
+    const response = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error || 'Password update failed');
+    }
+
+    return {
+      success: true,
+      message: data.message || 'Password updated successfully'
     };
   }
 };
