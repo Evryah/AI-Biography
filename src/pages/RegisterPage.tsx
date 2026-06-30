@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
 import AuthLayout from '../components/auth/AuthLayout';
 import RegisterForm from '../components/auth/RegisterForm';
@@ -6,6 +7,7 @@ import SuccessView from '../components/SuccessView';
 import { authService } from '../services/authService';
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successUser, setSuccessUser] = useState({ fullName: '', email: '' });
   const [isLoadingSession, setIsLoadingSession] = useState(true);
@@ -39,15 +41,8 @@ export default function RegisterPage() {
     setIsSubmitted(true);
   };
 
-  const handleContinue = async () => {
-    try {
-      // Clear secure JWT cookie on logout/exit
-      await authService.logout();
-    } catch (err) {
-      console.error("Unable to clear secure session:", err);
-    }
-    setIsSubmitted(false);
-    setSuccessUser({ fullName: '', email: '' });
+  const handleContinue = () => {
+    navigate('/preserve-story');
   };
 
   if (isLoadingSession) {
@@ -72,6 +67,7 @@ export default function RegisterPage() {
             fullName={successUser.fullName}
             email={successUser.email}
             onContinue={handleContinue}
+            type="register"
           />
         ) : (
           <RegisterForm onSuccess={handleRegisterSuccess} />

@@ -45,7 +45,7 @@ export default function ResetPasswordPage() {
       return { label: 'Empty', color: 'text-[#B18625]' }; // Amber Gold
     }
     if (password.length < 8) {
-      return { label: 'Too Short', color: 'text-rose-500 font-semibold' };
+      return { label: 'Weak', color: 'text-rose-500 font-semibold' };
     }
     if (password.length < 12) {
       return { label: 'Medium', color: 'text-amber-500 font-semibold' };
@@ -187,9 +187,10 @@ export default function ResetPasswordPage() {
                   {/* Horizontal rule separator before checklist as in screenshot */}
                   <div className="h-px bg-slate-100" />
 
-                  {/* Criteria Checklist - simplified to only show 8 characters limit */}
+                  {/* Criteria Checklist - exactly styled as in screenshot */}
                   <div className="text-xs text-slate-600 font-sans">
-                    {/* Criteria: At least 8 characters */}
+                    
+                    {/* Criteria 1: At least 8 characters */}
                     <div className="flex items-center gap-2">
                       <div className={`w-4 h-4 rounded-full flex items-center justify-center border transition-all duration-300 ${
                         hasMinLength 
@@ -204,6 +205,7 @@ export default function ResetPasswordPage() {
                         At least 8 characters
                       </span>
                     </div>
+
                   </div>
                 </div>
 
