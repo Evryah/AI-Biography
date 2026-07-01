@@ -11,11 +11,16 @@ export default function PreserveStoryPage() {
 
   const handleSelect = (option: 'diy' | 'pro') => {
     setSelectedOption(option);
+    if (option === 'diy') {
+      navigate('/diy');
+    }
   };
 
   const handleProceed = () => {
-    if (selectedOption) {
-      alert(`Thank you for choosing the ${selectedOption === 'diy' ? 'Do It Yourself' : 'Professional Biography'} option! We are setting up your legacy portal.`);
+    if (selectedOption === 'diy') {
+      navigate('/diy');
+    } else if (selectedOption === 'pro') {
+      alert(`Thank you for choosing the Professional Biography option! We are setting up your premium legacy portal.`);
     }
   };
 
